@@ -10,20 +10,52 @@
 
 @interface ViewController ()
 
+@property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, weak) IBOutlet UIView *containerView;
+@property (nonatomic, weak) IBOutlet UISegmentedControl *themeControl;
+
+- (IBAction)themeControlChanged:(id)sender;
+- (void)layoutScrollView;
+
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    [self layoutScrollView];
 }
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self layoutScrollView];
 }
 
+- (void)viewWillLayoutSubviews
+{
+    [self layoutScrollView];
+}
+
+- (void)layoutScrollView
+{
+    CGRect scrollViewBounds = self.scrollView.bounds;
+    CGRect contentViewBounds = self.containerView.bounds;
+    
+    UIEdgeInsets scrollViewInsets = UIEdgeInsetsZero;
+    scrollViewInsets.top = (scrollViewBounds.size.height * 0.5f);
+    scrollViewInsets.top -= (contentViewBounds.size.height * 0.5f);
+    
+    scrollViewInsets.bottom = (scrollViewBounds.size.height * 0.5f);
+    scrollViewInsets.bottom -= (contentViewBounds.size.height * 0.5f);
+    scrollViewInsets.bottom += 1;
+    
+    self.scrollView.contentInset = scrollViewInsets;
+}
+
+- (IBAction)themeControlChanged:(id)sender
+{
+    
+}
 
 @end
