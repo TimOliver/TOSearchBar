@@ -20,6 +20,8 @@
 
 @implementation TOSearchBar
 
+@synthesize barBackgroundTintColor = _barBackgroundTintColor;
+
 - (void)didMoveToSuperview
 {
     [super didMoveToSuperview];
@@ -30,22 +32,24 @@
 
 - (void)setUpViews
 {
-    CGRect frame;
     if (self.barBackgroundView == nil) {
         self.barBackgroundView = [[UIImageView alloc] initWithImage:[TOSearchBar sharedSearchBarBackground]];
-        self.barBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin |
-                                                    UIViewAutoresizingFlexibleWidth;
-        
-        
-        frame = self.barBackgroundView.frame;
-        frame.size.width = (self.frame.size.width) - (self.horizontalInset * 2.0f);
-        frame.origin.x = self.horizontalInset;
-        frame.origin.y = floorf((frame.size.height - self.frame.size.height) * 0.5f);
-        self.barBackgroundView.frame = frame;
-        
+        self.barBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin |
+                                                    UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
         self.barBackgroundView.tintColor = self.barBackgroundTintColor;
         [self addSubview:self.barBackgroundView];
     }
+}
+
+- (void)layoutSubviews
+{
+    CGRect frame;
+    
+    frame = self.barBackgroundView.frame;
+    frame.size.width = (self.frame.size.width) - (self.horizontalInset * 2.0f);
+    frame.origin.x = self.horizontalInset;
+    frame.origin.y = floorf((self.frame.size.height - frame.size.height) * 0.5f);
+    self.barBackgroundView.frame = frame;
 }
 
 #pragma mark - Tint Colors -
@@ -56,6 +60,22 @@
     }
     
     return _barBackgroundTintColor;
+}
+
+- (void)setBarBackgroundTintColor:(UIColor *)barBackgroundTintColor
+{
+    _barBackgroundTintColor = barBackgroundTintColor;
+    self.barBackgroundView.tintColor = _barBackgroundTintColor;
+}
+
+- (void)setHorizontalInset:(CGFloat)horizontalInset
+{
+    if (_horizontalInset == horizontalInset) {
+        return;
+    }
+    
+    _horizontalInset = horizontalInset;
+    [self setNeedsLayout];
 }
 
 @end

@@ -8,12 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+IB_DESIGNABLE
+
 @interface TOSearchBar : UIView
 
 /** How many points on each side the search bar is inset */
-@property (nonatomic, assign) CGFloat horizontalInset;
+@property (nonatomic, assign) IBInspectable CGFloat horizontalInset;
 
 /** The tint color of the rounded background */
-@property (nonatomic, strong) UIColor *barBackgroundTintColor;
+@property (nonatomic, strong) IBInspectable UIColor *barBackgroundTintColor;
 
 @end
