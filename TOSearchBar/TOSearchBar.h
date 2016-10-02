@@ -10,6 +10,10 @@
 
 @interface TOSearchBar : UIView
 
+/** How many points on each side the search bar is inset */
+@property (nonatomic, assign) CGFloat horizontalInset;
 
+/** The tint color of the rounded background */
+@property (nonatomic, strong) UIColor *barBackgroundTintColor;
 
 @end

@@ -13,13 +13,13 @@
 /* Once all images are released, the map table is also cleaned up */
 static NSMapTable *imageTable = nil;
 
-static const NSString *kSharedBackgroundKey = @"SharedSearchBackground";
-static const NSString *kSharedSearchIconKey = @"SharedSearchIcon";
-static const NSString *kSharedClearIconKey = @"SharedClearIcon";
+static NSString * const kSharedBackgroundKey = @"SharedSearchBackground";
+static NSString * const kSharedSearchIconKey = @"SharedSearchIcon";
+static NSString * const kSharedClearIconKey = @"SharedClearIcon";
 
 @implementation TOSearchBar (ImageAssets)
 
-+ (void)setImage:(UIImage *)image forKey:(NSString *)key
++ (void)setSharedImage:(UIImage *)image forKey:(NSString *)key
 {
     if (imageTable == nil) {
         imageTable = [[NSMapTable alloc] initWithKeyOptions:NSPointerFunctionsWeakMemory valueOptions:NSPointerFunctionsWeakMemory capacity:3];
@@ -44,11 +44,20 @@ static const NSString *kSharedClearIconKey = @"SharedClearIcon";
         return image;
     }
     
-    UIGraphicsBeginImageContextWithOptions((CGSize){15,28}, NO, 0.0f);
-    
+    CGRect frame = (CGRect){0,0,15,28};
+    UIGraphicsBeginImageContextWithOptions(frame.size, NO, 0.0f);
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:frame cornerRadius:4.0f];
+    [[UIColor blackColor] set];
+    [path fill];
+    image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    return nil;
+    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    image = [image resizableImageWithCapInsets:UIEdgeInsetsMake(0, 7.0f, 0, 7.0f)];
+    
+    [TOSearchBar setSharedImage:image forKey:kSharedBackgroundKey];
+    
+    return image;
 }
 
 + (UIImage *)sharedSearchIcon
