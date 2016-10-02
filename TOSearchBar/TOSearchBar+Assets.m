@@ -9,10 +9,55 @@
 #import "TOSearchBar+Assets.h"
 @import UIKit;
 
+/* A statically held map table that holds one instance of every image generated. */
+/* Once all images are released, the map table is also cleaned up */
+static NSMapTable *imageTable = nil;
+
+static const NSString *kSharedBackgroundKey = @"SharedSearchBackground";
+static const NSString *kSharedSearchIconKey = @"SharedSearchIcon";
+static const NSString *kSharedClearIconKey = @"SharedClearIcon";
+
 @implementation TOSearchBar (ImageAssets)
+
++ (void)setImage:(UIImage *)image forKey:(NSString *)key
+{
+    if (imageTable == nil) {
+        imageTable = [[NSMapTable alloc] initWithKeyOptions:NSPointerFunctionsWeakMemory valueOptions:NSPointerFunctionsWeakMemory capacity:3];
+    }
+    
+    [imageTable setObject:image forKey:key];
+}
+
++ (void)cleanUpSharedAssets
+{
+    if (imageTable.count > 0) {
+        return;
+    }
+    
+    imageTable = nil;
+}
+
++ (UIImage *)sharedSearchBarBackground
+{
+    UIImage *image = [imageTable objectForKey:kSharedBackgroundKey];
+    if (image) {
+        return image;
+    }
+    
+    UIGraphicsBeginImageContextWithOptions((CGSize){15,28}, NO, 0.0f);
+    
+    UIGraphicsEndImageContext();
+    
+    return nil;
+}
 
 + (UIImage *)sharedSearchIcon
 {
+    UIImage *image = [imageTable objectForKey:kSharedSearchIconKey];
+    if (image) {
+        return image;
+    }
+
     UIGraphicsBeginImageContextWithOptions((CGSize){15,15}, NO, 0.0f);
     
     //// General Declarations
@@ -36,7 +81,7 @@
     
     CGContextRestoreGState(context);
     
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
     return image;
@@ -44,6 +89,11 @@
 
 + (UIImage *)sharedClearIcon
 {
+    UIImage *image = [imageTable objectForKey:kSharedClearIconKey];
+    if (image) {
+        return image;
+    }
+
     UIGraphicsBeginImageContextWithOptions((CGSize){14,14}, NO, 0.0f);
     
     //// ClearIcon Drawing
@@ -77,7 +127,7 @@
     [UIColor.grayColor setFill];
     [clearIconPath fill];
 
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    image = UIGraphicsGetImageFromCurrentImageContext();
     
     UIGraphicsEndImageContext();
     

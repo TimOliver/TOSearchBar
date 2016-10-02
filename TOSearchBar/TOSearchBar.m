@@ -8,14 +8,15 @@
 
 #import "TOSearchBar.h"
 
+@interface TOSearchBar ()
+
+@property (nonatomic, strong) UIImageView *barBackgroundView;
+@property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
+
+@end
+
 @implementation TOSearchBar
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
+
 
 @end
