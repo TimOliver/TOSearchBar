@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11521.1" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ddj-l9-auM">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11521.1" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ddj-l9-auM">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11517.1"/>
@@ -31,20 +31,13 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vbx-QK-qZW">
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="myl-YE-YLi" userLabel="ContainerView">
                                         <subviews>
-                                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="fgK-PD-KdU" userLabel="UISearchBar">
-                                                <constraints>
-                                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="N2k-aD-ex8"/>
-                                                    <constraint firstAttribute="height" constant="44" id="VAM-Yq-HeZ"/>
-                                                </constraints>
-                                                <textInputTraits key="textInputTraits"/>
-                                            </searchBar>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UISearchBar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nrQ-9o-iAF" userLabel="UISearchBarLabel">
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="02N-7t-RgQ"/>
@@ -75,21 +68,32 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
+                                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="fgK-PD-KdU" userLabel="UISearchBar">
+                                                <constraints>
+                                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="N2k-aD-ex8"/>
+                                                    <constraint firstAttribute="height" constant="44" id="VAM-Yq-HeZ"/>
+                                                </constraints>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="BYZ-38-t0r" id="9k4-JX-Aaq"/>
+                                                </connections>
+                                            </searchBar>
                                         </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="vIG-Ir-P3i" secondAttribute="trailing" priority="750" id="0L8-fO-QPF"/>
-                                            <constraint firstItem="nrQ-9o-iAF" firstAttribute="bottom" secondItem="fgK-PD-KdU" secondAttribute="top" constant="-10" id="68t-HR-uyR"/>
-                                            <constraint firstAttribute="bottom" secondItem="fgK-PD-KdU" secondAttribute="bottom" constant="8" id="9zz-vu-G8z"/>
                                             <constraint firstItem="nrQ-9o-iAF" firstAttribute="centerX" secondItem="myl-YE-YLi" secondAttribute="centerX" id="Eeg-2g-FyV"/>
                                             <constraint firstAttribute="trailing" secondItem="fgK-PD-KdU" secondAttribute="trailing" priority="750" id="GzK-Lp-NiT"/>
                                             <constraint firstItem="vIG-Ir-P3i" firstAttribute="centerX" secondItem="myl-YE-YLi" secondAttribute="centerX" id="TpH-9I-nFT"/>
                                             <constraint firstItem="OwC-tn-l3K" firstAttribute="centerX" secondItem="myl-YE-YLi" secondAttribute="centerX" constant="3" id="bqB-T2-5YQ"/>
                                             <constraint firstItem="fgK-PD-KdU" firstAttribute="leading" secondItem="myl-YE-YLi" secondAttribute="leading" priority="750" id="en7-f9-dL3"/>
-                                            <constraint firstAttribute="height" constant="265" id="jCt-Ir-ZhT"/>
+                                            <constraint firstAttribute="height" constant="205" id="jCt-Ir-ZhT"/>
                                             <constraint firstItem="fgK-PD-KdU" firstAttribute="centerX" secondItem="myl-YE-YLi" secondAttribute="centerX" id="jDf-Op-wal"/>
                                             <constraint firstItem="OwC-tn-l3K" firstAttribute="top" secondItem="myl-YE-YLi" secondAttribute="top" constant="8" id="q7V-gE-KvY"/>
+                                            <constraint firstItem="nrQ-9o-iAF" firstAttribute="bottom" secondItem="fgK-PD-KdU" secondAttribute="top" constant="-10" id="tA7-Yb-LtA"/>
+                                            <constraint firstItem="nrQ-9o-iAF" firstAttribute="top" secondItem="vIG-Ir-P3i" secondAttribute="bottom" constant="44" id="thY-pw-oaS"/>
                                             <constraint firstItem="vIG-Ir-P3i" firstAttribute="leading" secondItem="myl-YE-YLi" secondAttribute="leading" priority="750" id="tp3-eI-a9A"/>
-                                            <constraint firstItem="vIG-Ir-P3i" firstAttribute="top" secondItem="OwC-tn-l3K" secondAttribute="bottom" constant="15" id="vAi-0P-mXC"/>
+                                            <constraint firstItem="vIG-Ir-P3i" firstAttribute="top" secondItem="OwC-tn-l3K" secondAttribute="bottom" constant="6" id="vAi-0P-mXC"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -99,6 +103,9 @@
                                     <constraint firstAttribute="trailing" secondItem="myl-YE-YLi" secondAttribute="trailing" id="hpe-vt-zm3"/>
                                     <constraint firstItem="myl-YE-YLi" firstAttribute="leading" secondItem="Vbx-QK-qZW" secondAttribute="leading" id="lp4-Ll-cEH"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="guB-6A-cRn"/>
+                                </connections>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -113,7 +120,7 @@
                     <navigationItem key="navigationItem" id="TaJ-w6-JZt">
                         <nil key="title"/>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="jKr-Nj-BIS">
-                            <rect key="frame" x="112.5" y="7" width="150" height="30"/>
+                            <rect key="frame" x="85" y="7" width="150" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="Light"/>
@@ -125,8 +132,10 @@
                         </segmentedControl>
                     </navigationItem>
                     <connections>
+                        <outlet property="classicSearchBar" destination="fgK-PD-KdU" id="uda-mU-EBn"/>
                         <outlet property="containerView" destination="myl-YE-YLi" id="dyk-4V-6Gy"/>
                         <outlet property="scrollView" destination="Vbx-QK-qZW" id="X3V-l3-Uqn"/>
+                        <outlet property="searchBar" destination="vIG-Ir-P3i" id="JOo-uD-OZe"/>
                         <outlet property="themeControl" destination="jKr-Nj-BIS" id="XI0-aX-l9g"/>
                     </connections>
                 </viewController>
