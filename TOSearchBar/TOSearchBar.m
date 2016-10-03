@@ -9,7 +9,7 @@
 #import "TOSearchBar.h"
 #import "TOSearchBar+Assets.h"
 
-@interface TOSearchBar ()
+@interface TOSearchBar () <UIGestureRecognizerDelegate>
 
 // UI components
 @property (nonatomic, strong) UIImageView *barBackgroundView;
@@ -19,10 +19,7 @@
 @property (nonatomic, strong) UIImageView *iconView;
 
 // Interaction */
-@property (nonatomic, strong) UILongPressGestureRecognizer *tapGestureRecognizer;
-
-// State Tracking
-@property (nonatomic, assign) BOOL barBackgroundHighlighted;
+@property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
 /* View Set-up */
 - (void)setUpViews;
@@ -31,18 +28,14 @@
 - (void)setUpButtons;
 - (void)setUpGestureRecognizers;
 
-/* Event Handling */
-- (void)tapGestureRecognized:(UITapGestureRecognizer *)tapGestureRecognizer;
-
 /* View Animating */
-- (void)setBarBackgroundHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 
 @end
 
 @implementation TOSearchBar
 
 @synthesize barBackgroundTintColor            = _barBackgroundTintColor;
-@synthesize barBackgroundTintColorHighlighted = _barBackgroundTintColorHighlighted;
 
 #pragma mark - View Lifecycle -
 - (void)didMoveToSuperview
@@ -111,10 +104,10 @@
     }
     
     // A long-press recognizer is used in order to detect when the user initially touches the glass
-    self.tapGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
-    self.tapGestureRecognizer.minimumPressDuration = 0.0f;
+    self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
     [self addGestureRecognizer:self.tapGestureRecognizer];
 }
+
 
 #pragma mark - View Management -
 - (void)layoutSubviews
@@ -139,29 +132,12 @@
 }
 
 #pragma mark - Event Handling -
-- (void)tapGestureRecognized:(UILongPressGestureRecognizer *)tapGestureRecognizer
+- (void)tapGestureRecognized:(UITapGestureRecognizer *)recognizer
 {
-    if (tapGestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        [self setBarBackgroundHighlighted:YES animated:YES];
-    }
-    else if (tapGestureRecognizer.state == UIGestureRecognizerStateEnded) {
-        [self setBarBackgroundHighlighted:NO animated:YES];
-    }
+    NSLog(@"XD");
 }
 
 #pragma mark - Animation -
-- (void)setBarBackgroundHighlighted:(BOOL)highlighted animated:(BOOL)animated
-{
-    if (animated == NO) {
-        self.barBackgroundHighlighted = highlighted;
-        return;
-    }
-    
-    UIColor *destinationColor = highlighted ? self.barBackgroundTintColorHighlighted : self.barBackgroundTintColor;
-    [UIView animateWithDuration:0.15f animations:^{
-        self.barBackgroundView.tintColor = destinationColor;
-    }];
-}
 
 #pragma mark - Accessors -
 - (UIColor *)barBackgroundTintColor
@@ -179,14 +155,6 @@
     self.barBackgroundView.tintColor = _barBackgroundTintColor;
 }
 
-- (UIColor *)barBackgroundTintColorHighlighted
-{
-    if (_barBackgroundTintColorHighlighted == nil) {
-        _barBackgroundTintColorHighlighted = [UIColor colorWithRed:0.0f green:0.05f blue:0.13f alpha:0.15f];
-    }
-    return _barBackgroundTintColorHighlighted;
-}
-
 - (void)setHorizontalInset:(CGFloat)horizontalInset
 {
     if (_horizontalInset == horizontalInset) {
@@ -195,13 +163,6 @@
     
     _horizontalInset = horizontalInset;
     [self setNeedsLayout];
-}
-
-- (void)setBarBackgroundHighlighted:(BOOL)barBackgroundHighlighted
-{
-    _barBackgroundHighlighted = barBackgroundHighlighted;
-    self.barBackgroundView.tintColor = _barBackgroundHighlighted ? self.barBackgroundTintColorHighlighted :
-                                                                                self.barBackgroundTintColor;
 }
 
 @end
