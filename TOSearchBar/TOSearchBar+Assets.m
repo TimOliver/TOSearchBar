@@ -46,7 +46,7 @@ static NSString * const kSharedClearIconKey = @"SharedClearIcon";
     
     CGRect frame = (CGRect){0,0,15,28};
     UIGraphicsBeginImageContextWithOptions(frame.size, NO, 0.0f);
-    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:frame cornerRadius:4.0f];
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:frame cornerRadius:4.5f];
     [[UIColor blackColor] set];
     [path fill];
     image = UIGraphicsGetImageFromCurrentImageContext();
@@ -93,6 +93,8 @@ static NSString * const kSharedClearIconKey = @"SharedClearIcon";
     image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
+    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    
     return image;
 }
 
@@ -137,8 +139,9 @@ static NSString * const kSharedClearIconKey = @"SharedClearIcon";
     [clearIconPath fill];
 
     image = UIGraphicsGetImageFromCurrentImageContext();
-    
     UIGraphicsEndImageContext();
+    
+    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
     return image;
 }

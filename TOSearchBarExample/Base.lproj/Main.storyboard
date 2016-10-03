@@ -47,15 +47,6 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TOSearchBar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OwC-tn-l3K" userLabel="TOSearchBarLabel">
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="102" id="fut-Bc-HIK"/>
-                                                    <constraint firstAttribute="height" constant="21" id="mqU-Jl-Njm"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vIG-Ir-P3i" userLabel="TOSearchBar" customClass="TOSearchBar">
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -78,6 +69,15 @@
                                                     <outlet property="delegate" destination="BYZ-38-t0r" id="9k4-JX-Aaq"/>
                                                 </connections>
                                             </searchBar>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TOSearchBar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OwC-tn-l3K" userLabel="TOSearchBarLabel">
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="104" id="fut-Bc-HIK"/>
+                                                    <constraint firstAttribute="height" constant="21" id="mqU-Jl-Njm"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -85,15 +85,15 @@
                                             <constraint firstItem="nrQ-9o-iAF" firstAttribute="centerX" secondItem="myl-YE-YLi" secondAttribute="centerX" id="Eeg-2g-FyV"/>
                                             <constraint firstAttribute="trailing" secondItem="fgK-PD-KdU" secondAttribute="trailing" priority="750" id="GzK-Lp-NiT"/>
                                             <constraint firstItem="vIG-Ir-P3i" firstAttribute="centerX" secondItem="myl-YE-YLi" secondAttribute="centerX" id="TpH-9I-nFT"/>
-                                            <constraint firstItem="OwC-tn-l3K" firstAttribute="centerX" secondItem="myl-YE-YLi" secondAttribute="centerX" constant="3" id="bqB-T2-5YQ"/>
+                                            <constraint firstItem="OwC-tn-l3K" firstAttribute="centerX" secondItem="myl-YE-YLi" secondAttribute="centerX" id="bqB-T2-5YQ"/>
                                             <constraint firstItem="fgK-PD-KdU" firstAttribute="leading" secondItem="myl-YE-YLi" secondAttribute="leading" priority="750" id="en7-f9-dL3"/>
                                             <constraint firstAttribute="height" constant="205" id="jCt-Ir-ZhT"/>
                                             <constraint firstItem="fgK-PD-KdU" firstAttribute="centerX" secondItem="myl-YE-YLi" secondAttribute="centerX" id="jDf-Op-wal"/>
-                                            <constraint firstItem="OwC-tn-l3K" firstAttribute="top" secondItem="myl-YE-YLi" secondAttribute="top" constant="8" id="q7V-gE-KvY"/>
+                                            <constraint firstItem="OwC-tn-l3K" firstAttribute="top" secondItem="myl-YE-YLi" secondAttribute="top" constant="6" id="q7V-gE-KvY"/>
                                             <constraint firstItem="nrQ-9o-iAF" firstAttribute="bottom" secondItem="fgK-PD-KdU" secondAttribute="top" constant="-10" id="tA7-Yb-LtA"/>
                                             <constraint firstItem="nrQ-9o-iAF" firstAttribute="top" secondItem="vIG-Ir-P3i" secondAttribute="bottom" constant="44" id="thY-pw-oaS"/>
                                             <constraint firstItem="vIG-Ir-P3i" firstAttribute="leading" secondItem="myl-YE-YLi" secondAttribute="leading" priority="750" id="tp3-eI-a9A"/>
-                                            <constraint firstItem="vIG-Ir-P3i" firstAttribute="top" secondItem="OwC-tn-l3K" secondAttribute="bottom" constant="6" id="vAi-0P-mXC"/>
+                                            <constraint firstItem="vIG-Ir-P3i" firstAttribute="top" secondItem="OwC-tn-l3K" secondAttribute="bottom" constant="8" id="vAi-0P-mXC"/>
                                         </constraints>
                                     </view>
                                 </subviews>
