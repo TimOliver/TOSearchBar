@@ -31,6 +31,9 @@ IB_DESIGNABLE
 /** Whether the text field contains any text or not */
 @property (nonatomic, readonly) BOOL hasSearchText;
 
+/** Shows a 'Cancel' button while editing */
+@property (nonatomic, assign) BOOL showsCancelButton;
+
 /** The tint color of the placeholder content (Both the icon and the text) */
 @property (nonatomic, strong) IBInspectable UIColor *placeholderTintColor UI_APPEARANCE_SELECTOR;
 
