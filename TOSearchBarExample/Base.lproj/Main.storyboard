@@ -57,6 +57,7 @@
                                                     <userDefinedRuntimeAttribute type="number" keyPath="horizontalInset">
                                                         <real key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showsCancelButton" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="fgK-PD-KdU" userLabel="UISearchBar">
