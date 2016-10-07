@@ -73,8 +73,8 @@
     UIEdgeInsets scrollViewInsets = UIEdgeInsetsZero;
     
     //Center it on iPad
-    if (self.view.frame.size.height >= 768.0f) {
-        contentViewBounds.size.height -= self.keyboardHeight;
+    /*if (self.view.frame.size.height >= 768.0f) {
+        scrollViewBounds.size.height -= self.keyboardHeight;
     
         scrollViewInsets.top = (scrollViewBounds.size.height * 0.5f);
         scrollViewInsets.top -= (contentViewBounds.size.height * 0.5f);
@@ -86,10 +86,10 @@
         
         scrollViewInsets.bottom += self.keyboardHeight;
     }
-    else { // Static vertical offset
+    else { // Static vertical offset*/
         scrollViewInsets.top = 40.0f;
         scrollViewInsets.bottom = MAX(self.keyboardHeight, scrollViewBounds.size.height - (40.0f + contentViewBounds.size.height));
-    }
+    //}
     scrollViewInsets.bottom += 1;
     
     self.scrollView.contentInset = scrollViewInsets;
