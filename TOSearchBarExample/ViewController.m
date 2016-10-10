@@ -14,6 +14,8 @@
 @property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, weak) IBOutlet UIView *containerView;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *themeControl;
+@property (nonatomic, weak) IBOutlet UILabel *classicSearchLabel;
+@property (nonatomic, weak) IBOutlet UILabel *searchLabel;
 
 @property (nonatomic, weak) IBOutlet UISearchBar *classicSearchBar;
 @property (nonatomic, weak) IBOutlet TOSearchBar *searchBar;
@@ -72,24 +74,9 @@
     
     UIEdgeInsets scrollViewInsets = UIEdgeInsetsZero;
     
-    //Center it on iPad
-    /*if (self.view.frame.size.height >= 768.0f) {
-        scrollViewBounds.size.height -= self.keyboardHeight;
-    
-        scrollViewInsets.top = (scrollViewBounds.size.height * 0.5f);
-        scrollViewInsets.top -= (contentViewBounds.size.height * 0.5f);
-        scrollViewInsets.top = MAX(0.0f, scrollViewInsets.top);
-        
-        scrollViewInsets.bottom = (scrollViewBounds.size.height * 0.5f);
-        scrollViewInsets.bottom -= (contentViewBounds.size.height * 0.5f);
-        scrollViewInsets.bottom = MAX(0.0f, scrollViewInsets.bottom);
-        
-        scrollViewInsets.bottom += self.keyboardHeight;
-    }
-    else { // Static vertical offset*/
-        scrollViewInsets.top = 40.0f;
-        scrollViewInsets.bottom = MAX(self.keyboardHeight, scrollViewBounds.size.height - (40.0f + contentViewBounds.size.height));
-    //}
+    scrollViewInsets.top = 40.0f;
+    scrollViewInsets.bottom = MAX(self.keyboardHeight, scrollViewBounds.size.height - (40.0f + contentViewBounds.size.height));
+
     scrollViewInsets.bottom += 1;
     
     self.scrollView.contentInset = scrollViewInsets;
@@ -105,7 +92,18 @@
 
 - (IBAction)themeControlChanged:(id)sender
 {
+    BOOL darkMode = (self.themeControl.selectedSegmentIndex == 1);
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
     
+    self.view.backgroundColor = darkMode ? [UIColor colorWithWhite:0.09f alpha:1.0f] : [UIColor whiteColor];
+    navigationBar.barStyle = darkMode ? UIBarStyleBlack : UIBarStyleDefault;
+    navigationBar.barTintColor = darkMode ? [UIColor colorWithWhite:0.1f alpha:1.0f] : nil;
+    self.view.window.tintColor = darkMode ? [UIColor colorWithRed:90.0f/255.0f green:120.0f/255.0f blue:218.0f/255.0f alpha:1.0f] : nil;
+    
+    self.searchLabel.textColor = darkMode ? [UIColor whiteColor] : [UIColor blackColor];
+    self.classicSearchLabel.textColor = darkMode ? [UIColor whiteColor] : [UIColor blackColor];
+    
+    self.searchBar.style = darkMode ? TOSearchBarStyleDark : TOSearchBarStyleLight;
 }
 
 #pragma mark - Search Bar Delegate -

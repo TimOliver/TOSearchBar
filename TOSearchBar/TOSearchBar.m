@@ -15,13 +15,13 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
 @interface TOSearchBar () <UIGestureRecognizerDelegate, UITextFieldDelegate>
 
 // UI components
-@property (nonatomic, strong) UIImageView *barBackgroundView;
-@property (nonatomic, strong) UIView *containerView;
-@property (nonatomic, strong) UILabel *placeholderLabel;
-@property (nonatomic, strong) UITextField *searchTextField;
-@property (nonatomic, strong) UIButton *cancelButton;
-@property (nonatomic, strong) UIButton *clearButton;
-@property (nonatomic, strong) UIImageView *iconView;
+@property (nonatomic, strong, readwrite) UIImageView *barBackgroundView;
+@property (nonatomic, strong, readwrite) UIView *containerView;
+@property (nonatomic, strong, readwrite) UILabel *placeholderLabel;
+@property (nonatomic, strong, readwrite) UITextField *searchTextField;
+@property (nonatomic, strong, readwrite) UIButton *cancelButton;
+@property (nonatomic, strong, readwrite) UIButton *clearButton;
+@property (nonatomic, strong, readwrite) UIImageView *iconView;
 
 // Interaction */
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
@@ -33,6 +33,9 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
 - (void)setUpButtons;
 - (void)setUpTextField;
 - (void)setUpGestureRecognizers;
+
+/* Theme Management */
+- (void)configureThemeForCurrentStyle;
 
 /* State Management */
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
@@ -67,6 +70,8 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     [self setUpButtons];
     [self setUpTextField];
     [self setUpGestureRecognizers];
+    
+    [self configureThemeForCurrentStyle];
 }
 
 - (void)setUpBackgroundViews
@@ -94,7 +99,6 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     }
     self.placeholderLabel.font = [UIFont systemFontOfSize:15.0f];
     self.placeholderLabel.text = @"Search";
-    self.placeholderLabel.textColor = [UIColor grayColor];
     [self.placeholderLabel sizeToFit];
     [self.containerView addSubview:self.placeholderLabel];
 
@@ -102,7 +106,6 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     if (self.iconView == nil) {
         self.iconView = [[UIImageView alloc] initWithImage:[TOSearchBar sharedSearchIcon]];
     }
-    self.iconView.tintColor = [UIColor grayColor];
     [self.containerView addSubview:self.iconView];
 }
 
@@ -113,7 +116,6 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     }
     
     self.searchTextField.font = [UIFont systemFontOfSize:15.0f];
-    self.searchTextField.textColor = [UIColor blackColor];
     self.searchTextField.delegate = self;
     self.searchTextField.returnKeyType = UIReturnKeySearch;
     [self.searchTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
@@ -142,7 +144,6 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     [self.clearButton setImage:clearButtonImage forState:UIControlStateNormal];
     self.clearButton.frame = (CGRect){CGPointZero, {44.0f, 44.0f}};
     self.clearButton.enabled = NO;
-    self.clearButton.tintColor = [UIColor grayColor];
     [self.clearButton addTarget:self action:@selector(clearButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.containerView addSubview:self.clearButton];
 }
@@ -232,6 +233,26 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
         self.clearButton.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.01f, 0.01f);
         self.clearButton.alpha = 0.0f;
     }
+}
+
+#pragma mark - Theme Management -
+- (void)configureThemeForCurrentStyle
+{
+    BOOL darkMode = (self.style == TOSearchBarStyleDark);
+    
+    if (darkMode) {
+        self.barBackgroundTintColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.065f];
+        self.placeholderTintColor = [UIColor colorWithWhite:0.5f alpha:1.0f];
+        self.searchTextField.textColor = [UIColor whiteColor];
+        self.clearButton.tintColor = [UIColor colorWithWhite:0.5f alpha:1.0f];
+        
+        return;
+    }
+    
+    self.placeholderTintColor = [UIColor colorWithWhite:0.4f alpha:1.0f];
+    self.searchTextField.textColor = [UIColor blackColor];
+    self.clearButton.tintColor = [UIColor colorWithWhite:0.4f alpha:1.0f];
+    self.barBackgroundTintColor = [UIColor colorWithRed:0.0f green:0.05f blue:0.13f alpha:0.083f];
 }
 
 #pragma mark - Event Handling -
@@ -356,10 +377,6 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
 
 - (UIColor *)barBackgroundTintColor
 {
-    if (_barBackgroundTintColor == nil) {
-        _barBackgroundTintColor = [UIColor colorWithRed:0.0f green:0.05f blue:0.13f alpha:0.083f];
-    }
-    
     return _barBackgroundTintColor;
 }
 
@@ -377,6 +394,23 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     
     _horizontalInset = horizontalInset;
     [self setNeedsLayout];
+}
+
+- (void)setPlaceholderTintColor:(UIColor *)placeholderTintColor
+{
+    _placeholderTintColor = placeholderTintColor;
+    self.placeholderLabel.textColor = placeholderTintColor;
+    self.iconView.tintColor = placeholderTintColor;
+}
+
+- (void)setStyle:(TOSearchBarStyle)style
+{
+    if (style == _style) {
+        return;
+    }
+    
+    _style = style;
+    [self configureThemeForCurrentStyle];
 }
 
 - (void)setShowsCancelButton:(BOOL)showsCancelButton

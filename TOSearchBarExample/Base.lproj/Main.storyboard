@@ -134,9 +134,11 @@
                     </navigationItem>
                     <connections>
                         <outlet property="classicSearchBar" destination="fgK-PD-KdU" id="uda-mU-EBn"/>
+                        <outlet property="classicSearchLabel" destination="nrQ-9o-iAF" id="eZQ-FA-siD"/>
                         <outlet property="containerView" destination="myl-YE-YLi" id="dyk-4V-6Gy"/>
                         <outlet property="scrollView" destination="Vbx-QK-qZW" id="X3V-l3-Uqn"/>
                         <outlet property="searchBar" destination="vIG-Ir-P3i" id="JOo-uD-OZe"/>
+                        <outlet property="searchLabel" destination="OwC-tn-l3K" id="5bd-57-OTW"/>
                         <outlet property="themeControl" destination="jKr-Nj-BIS" id="XI0-aX-l9g"/>
                     </connections>
                 </viewController>
