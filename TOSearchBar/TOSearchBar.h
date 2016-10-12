@@ -34,16 +34,44 @@ typedef NS_ENUM(NSInteger, TOSearchBarStyle) {
 @protocol TOSearchBarDelegate <NSObject>
 
 @optional
+/**
+ Called before the text field gains focus, and can optionally reject doing so.
+ */
 - (BOOL)searchBarShouldBeginEditing:(TOSearchBar *)searchBar;
+
+/**
+ Called just after the text field gains focus.
+ */
 - (void)searchBarDidBeginEditing:(TOSearchBar *)searchBar;
 
+/**
+ Called before the text field loses focus, and can optionally reject doing so.
+ */
 - (BOOL)searchBarShouldEndEditing:(TOSearchBar *)searchBar;
+
+/**
+ Called just after the text field loses focus.
+ */
 - (void)searchBarDidEndEditing:(TOSearchBar *)searchBar;
 
+/**
+ Called just after each time the text in the text field is changed.
+ */
 - (void)searchBarDidChange:(TOSearchBar *)searchBar;
+
+/**
+ Called during text editing and can be used to optionally constrain the type of characters the field can accept.
+ */
 - (BOOL)searchBar:(TOSearchBar *)searchBar shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
 
+/** 
+ Called when the 'Clear' button is tapped to confirm it may go ahead.
+ */
 - (BOOL)searchBarShouldClear:(TOSearchBar *)searchBar;
+
+/**
+ Called after the user hits the 'Search' button. Can be used to set up actions for that event.
+ */
 - (BOOL)searchBarShouldReturn:(TOSearchBar *)searchBar;
 
 @end
