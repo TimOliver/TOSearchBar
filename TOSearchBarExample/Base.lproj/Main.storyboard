@@ -58,6 +58,9 @@
                                                         <real key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showsCancelButton" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="style">
+                                                        <integer key="value" value="0"/>
+                                                    </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="fgK-PD-KdU" userLabel="UISearchBar">
@@ -65,7 +68,7 @@
                                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="N2k-aD-ex8"/>
                                                     <constraint firstAttribute="height" constant="44" id="VAM-Yq-HeZ"/>
                                                 </constraints>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" keyboardAppearance="alert"/>
                                                 <connections>
                                                     <outlet property="delegate" destination="BYZ-38-t0r" id="9k4-JX-Aaq"/>
                                                 </connections>

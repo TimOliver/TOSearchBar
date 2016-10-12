@@ -51,6 +51,29 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
 
 @synthesize barBackgroundTintColor = _barBackgroundTintColor;
 
+- (instancetype)initWithFrame:(CGRect)frame style:(TOSearchBarStyle)style
+{
+    if (self = [super initWithFrame:frame]) {
+        _style = style;
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithStyle:(TOSearchBarStyle)style
+{
+    if (self = [super initWithFrame:CGRectZero]) {
+        _style = style;
+    }
+    
+    return self;
+}
+
+- (void)dealloc
+{
+    [TOSearchBar cleanUpSharedAssets];
+}
+
 #pragma mark - View Lifecycle -
 - (void)didMoveToSuperview
 {
@@ -268,6 +291,12 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
 
 - (void)clearButtonTapped:(id)sender
 {
+    if ([self.delegate respondsToSelector:@selector(searchBarShouldClear:)]) {
+        if ([self.delegate searchBarShouldClear:self]) {
+            return;
+        }
+    }
+    
     self.text = nil;
     self.clearButton.enabled = NO;
     self.placeholderLabel.hidden = NO;
@@ -324,21 +353,69 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
 }
 
 #pragma mark - Text Field Delegate -
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    if ([self.delegate respondsToSelector:@selector(searchBarShouldBeginEditing:)]) {
+        return [self.delegate searchBarShouldBeginEditing:self];
+    }
+    
+    return YES;
+}
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     [self setEditing:YES animated:YES];
+    
+    if ([self.delegate respondsToSelector:@selector(searchBarDidBeginEditing:)]) {
+        [self.delegate searchBarDidBeginEditing:self];
+    }
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    if ([self.delegate respondsToSelector:@selector(searchBarShouldEndEditing:)]) {
+        return [self.delegate searchBarShouldEndEditing:self];
+    }
+    
+    return YES;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     [textField layoutIfNeeded]; // Necessary to stop bouncing animation glitch
     [self setEditing:NO animated:YES];
+    
+    if ([self.delegate respondsToSelector:@selector(searchBarDidEndEditing:)]) {
+        [self.delegate searchBarDidEndEditing:self];
+    }
 }
 
 - (void)textFieldDidChange:(UITextField *)textField
 {
     self.placeholderLabel.hidden = self.hasSearchText;
     self.clearButton.enabled     = self.hasSearchText;
+    
+    if ([self.delegate respondsToSelector:@selector(searchBarDidChange:)]) {
+        [self.delegate searchBarDidChange:self];
+    }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if ([self.delegate respondsToSelector:@selector(searchBar:shouldChangeTextInRange:replacementText:)]) {
+        return [self.delegate searchBar:self shouldChangeCharactersInRange:range replacementString:string];
+    }
+    
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if ([self.delegate respondsToSelector:@selector(searchBarShouldReturn:)]) {
+        return [self.delegate searchBarShouldReturn:self];
+    }
+    
+    return YES;
 }
 
 #pragma mark - Accessors -

@@ -14,6 +14,6 @@
 + (UIImage *)sharedSearchIcon; /* The magnifying glads icon */
 + (UIImage *)sharedClearIcon;  /* The clear button icon. */
 
-+ (void)cleanUpSharedAssets; /* Called upon each `dealloc` method call to potentially release memory. */
++ (void)cleanUpSharedAssets; /* Called upon each `dealloc` method call to clean up any freed assets. */
 
 @end

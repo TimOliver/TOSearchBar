@@ -8,18 +8,29 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSInteger, TOSearchBarStyle) {
-    TOSearchBarStyleLight,
-    TOSearchBarStyleDark
+    TOSearchBarStyleLight = 0,
+    TOSearchBarStyleDark = 1
 };
 
 @class TOSearchBar;
 
 @protocol TOSearchBarDelegate <NSObject>
 
-- (BOOL)searchBarShouldBeginEditing:(nonnull TOSearchBar *)searchBar;
-- (BOOL)searchBarShouldEndEditing:(nonnull TOSearchBar *)searchBar;
+@optional
+- (BOOL)searchBarShouldBeginEditing:(TOSearchBar *)searchBar;
+- (void)searchBarDidBeginEditing:(TOSearchBar *)searchBar;
 
+- (BOOL)searchBarShouldEndEditing:(TOSearchBar *)searchBar;
+- (void)searchBarDidEndEditing:(TOSearchBar *)searchBar;
+
+- (void)searchBarDidChange:(TOSearchBar *)searchBar;
+- (BOOL)searchBar:(TOSearchBar *)searchBar shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
+
+- (BOOL)searchBarShouldClear:(TOSearchBar *)searchBar;
+- (BOOL)searchBarShouldReturn:(TOSearchBar *)searchBar;
 
 @end
 
@@ -62,19 +73,19 @@ IB_DESIGNABLE
 @property (nullable, nonatomic, strong) IBInspectable UIColor *highlightedBarBackgroundTintColor UI_APPEARANCE_SELECTOR;
 
 /** The main text field that the user will input search text */
-@property (nonnull, nonatomic, readonly) UITextField *searchTextField;
+@property (nonatomic, readonly) UITextField *searchTextField;
 
 /** The auxiliary icon view to the left of the text field text */
 @property (nullable, nonatomic, readonly) UIImageView *iconView;
 
 /** The initial 'Search' text label displayed when the search field is empty. */
-@property (nonnull, nonatomic, strong, readonly) UILabel *placeholderLabel;
+@property (nonatomic, strong, readonly) UILabel *placeholderLabel;
 
 /** If specified, the 'Cancel' button that can cancel out of text input */
 @property (nullable, nonatomic, readonly) UIButton *cancelButton;
 
 /** The 'clear' button that will clear any text in the text field */
-@property (nonnull, nonatomic, strong, readonly) UIButton *clearButton;
+@property (nonatomic, strong, readonly) UIButton *clearButton;
 
 /** 
  Create a new instance of this class, specifying the frame and style. 
@@ -82,15 +93,15 @@ IB_DESIGNABLE
  @param frame The entire frame for this view (Ideally of a height of 44 points)
  @param style The color style of the view (light or dark)
  */
-- (nonnull instancetype)initWithFrame:(CGRect)frame style:(TOSearchBarStyle)style;
+- (instancetype)initWithFrame:(CGRect)frame style:(TOSearchBarStyle)style;
 
 /**
  Create a new instance of this class, specifying the style.
  
  @param style The color style of the view (light or dark)
  */
-- (nonnull instancetype)initWithStyle:(TOSearchBarStyle)style;
-
-
+- (instancetype)initWithStyle:(TOSearchBarStyle)style;
 
 @end
+
+NS_ASSUME_NONNULL_END
