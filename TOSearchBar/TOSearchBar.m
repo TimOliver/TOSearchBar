@@ -53,6 +53,7 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
 
 /* State Management */
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setClearButtonHidden:(BOOL)hidden animated:(BOOL)animated;
 
 /* Feedback Events */
 - (void)textFieldDidChange:(UITextField *)textField;
@@ -181,6 +182,7 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     [self.clearButton setImage:clearButtonImage forState:UIControlStateNormal];
     self.clearButton.frame = (CGRect){CGPointZero, {44.0f, 44.0f}};
     self.clearButton.enabled = NO;
+    self.clearButton.hidden = YES;
     [self.clearButton addTarget:self action:@selector(clearButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.containerView addSubview:self.clearButton];
 }
@@ -261,15 +263,6 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     center.x = (CGRectGetWidth(self.containerView.frame) - (kTOSearchBarInset + (clearImageSize.width * 0.5f)));
     center.y = (CGRectGetHeight(self.containerView.frame) * 0.5f);
     self.clearButton.center = center;
-    
-    if (self.hasSearchText || self.editing) {
-        self.clearButton.transform = CGAffineTransformIdentity;
-        self.clearButton.alpha = 1.0f;
-    }
-    else {
-        self.clearButton.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.01f, 0.01f);
-        self.clearButton.alpha = 0.0f;
-    }
 }
 
 #pragma mark - Theme Management -
@@ -279,16 +272,15 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     
     if (darkMode) {
         self.barBackgroundTintColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.065f];
-        self.placeholderTintColor = [UIColor colorWithWhite:0.5f alpha:1.0f];
+        self.placeholderTintColor = [UIColor colorWithWhite:0.4f alpha:1.0f];
         self.searchTextField.textColor = [UIColor whiteColor];
-        self.clearButton.tintColor = [UIColor colorWithWhite:0.5f alpha:1.0f];
-        
+        self.clearButton.tintColor = [UIColor colorWithWhite:0.45f alpha:1.0f];
         return;
     }
     
-    self.placeholderTintColor = [UIColor colorWithWhite:0.4f alpha:1.0f];
+    self.placeholderTintColor = [UIColor colorWithWhite:0.55f alpha:1.0f];
     self.searchTextField.textColor = [UIColor blackColor];
-    self.clearButton.tintColor = [UIColor colorWithWhite:0.4f alpha:1.0f];
+    self.clearButton.tintColor = [UIColor colorWithWhite:0.55f alpha:1.0f];
     self.barBackgroundTintColor = [UIColor colorWithRed:0.0f green:0.05f blue:0.13f alpha:0.083f];
 }
 
@@ -314,6 +306,7 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     self.text = nil;
     self.clearButton.enabled = NO;
     self.placeholderLabel.hidden = NO;
+    [self setClearButtonHidden:YES animated:YES];
     [self becomeFirstResponder];
 }
 
@@ -359,11 +352,48 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
                           delay:0.0f
          usingSpringWithDamping:1.0f
           initialSpringVelocity:0.1f
-                        options:0
+                        options:UIViewAnimationOptionBeginFromCurrentState
                      animations:
      ^{
         [self layoutIfNeeded];
      } completion:nil];
+}
+
+- (void)setClearButtonHidden:(BOOL)hidden animated:(BOOL)animated
+{
+    if (self.clearButton.hidden == hidden) {
+        return;
+    }
+    
+    if (animated == NO) {
+        self.clearButton.hidden = hidden;
+        return;
+    }
+    
+    self.clearButton.hidden = NO;
+    
+    CGAffineTransform visibleTransform = CGAffineTransformIdentity;
+    CGAffineTransform hiddenTransform = CGAffineTransformScale(CGAffineTransformIdentity, 0.01f, 0.01f);
+    
+    CGFloat visibleAlpha = 1.0f;
+    CGFloat hiddenAlpha = 0.0f;
+    
+    self.clearButton.transform = hidden ? visibleTransform : hiddenTransform;
+    self.clearButton.alpha = hidden ? visibleAlpha : hiddenAlpha;
+    
+    [self.clearButton.layer removeAllAnimations];
+    [UIView animateWithDuration:0.25f
+                          delay:0.0f
+         usingSpringWithDamping:1.0f
+          initialSpringVelocity:0.1f
+                        options:0
+                     animations:
+     ^{
+         self.clearButton.alpha = hidden ? hiddenAlpha : visibleAlpha;
+         self.clearButton.transform = hidden ? hiddenTransform : visibleTransform;
+     } completion:^(BOOL complete) {
+         self.clearButton.hidden = hidden;
+     }];
 }
 
 #pragma mark - Text Field Delegate -
@@ -408,6 +438,8 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
 {
     self.placeholderLabel.hidden = self.hasSearchText;
     self.clearButton.enabled     = self.hasSearchText;
+    
+    [self setClearButtonHidden:!self.hasSearchText animated:YES];
     
     if ([self.delegate respondsToSelector:@selector(searchBarDidChange:)]) {
         [self.delegate searchBarDidChange:self];
