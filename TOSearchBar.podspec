@@ -8,5 +8,8 @@ Pod::Spec.new do |s|
   s.source   = { :git => 'https://github.com/TimOliver/TOSearchBar.git', :tag => s.version }
   s.platform = :ios, '7.0'
   s.source_files = 'TOSearchBar/**/*.{h,m}'
+  s.resource_bundles = {
+    'TOSearchBarBundle' => ['TOSearchBar/**/*.lproj']
+  }
   s.requires_arc = true
 end
