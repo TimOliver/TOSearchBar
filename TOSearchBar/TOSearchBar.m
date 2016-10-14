@@ -23,8 +23,6 @@
 #import "TOSearchBar.h"
 #import "TOSearchBar+Assets.h"
 
-#define UIKitLocalizedString(key) [[NSBundle bundleWithIdentifier:@"com.apple.UIKit"] localizedStringForKey:key value:@"" table:nil]
-
 static const CGFloat kTOSearchBarInset = 8.0f; // inset from inside the bar
 static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and placeholder
 
@@ -39,7 +37,7 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
 @property (nonatomic, strong, readwrite) UIButton *clearButton;
 @property (nonatomic, strong, readwrite) UIImageView *iconView;
 
-// Interaction */
+// Interaction
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
 /* View Set-up */
@@ -61,6 +59,9 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
 - (void)textFieldDidChange:(UITextField *)textField;
 - (void)clearButtonTapped:(id)sender;
 - (void)cancelButttonTapped:(id)sender;
+
+/* Assets Bundle */
++ (NSBundle *)bundle;
 
 @end
 
@@ -138,7 +139,10 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
         self.placeholderLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     }
     self.placeholderLabel.font = [UIFont systemFontOfSize:15.0f];
-    self.placeholderLabel.text = @"Search";
+    self.placeholderLabel.text = NSLocalizedStringFromTableInBundle(@"Search",
+                                                                    @"TOSearchBarLocalizable",
+                                                                    [TOSearchBar bundle],
+                                                                    nil);
     [self.placeholderLabel sizeToFit];
     [self.containerView addSubview:self.placeholderLabel];
 
@@ -167,7 +171,10 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     if (self.showsCancelButton && self.cancelButton == nil) {
         self.cancelButton = [UIButton buttonWithType:UIButtonTypeSystem];
     }
-    [self.cancelButton setTitle:UIKitLocalizedString(@"Cancel") forState:UIControlStateNormal];
+    [self.cancelButton setTitle:NSLocalizedStringFromTableInBundle(@"Cancel",
+                                                                   @"TOSearchBarLocalizable",
+                                                                   [TOSearchBar bundle],
+                                                                   nil) forState:UIControlStateNormal];
     self.cancelButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
     self.cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [self.cancelButton addTarget:self action:@selector(cancelButttonTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -490,7 +497,10 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
 
 - (void)setPlaceholderText:(NSString *)placeholderText
 {
-    self.placeholderLabel.text = placeholderText ?: UIKitLocalizedString(@"Search");
+    self.placeholderLabel.text = placeholderText ?: NSLocalizedStringFromTableInBundle(@"Search",
+                                                                                       @"TOSearchBarLocalizable",
+                                                                                       [TOSearchBar bundle],
+                                                                                       nil);
     [self.placeholderLabel sizeToFit];
     [self setNeedsLayout];
 }
@@ -551,6 +561,22 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     }
     
     [self setNeedsLayout];
+}
+
++ (NSBundle *)bundle
+{
+    // Whether installed manually or via CocoaPods, this will configure the bundle paths properly
+    NSBundle *resourceBundle = nil;
+    NSBundle *classBundle = [NSBundle bundleForClass:[self class]];
+    NSURL *resourceBundleURL = [classBundle URLForResource:@"TOSearchBarBundle" withExtension:@"bundle"];
+    if (resourceBundleURL) {
+        resourceBundle = [[NSBundle alloc] initWithURL:resourceBundleURL];
+    }
+    else {
+        resourceBundle = classBundle;
+    }
+    
+    return resourceBundle;
 }
 
 @end

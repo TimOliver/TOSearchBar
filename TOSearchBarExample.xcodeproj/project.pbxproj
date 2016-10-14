@@ -14,6 +14,7 @@
 		225977D01D9B682D00D23742 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 225977CF1D9B682D00D23742 /* Assets.xcassets */; };
 		225977D31D9B682D00D23742 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 225977D11D9B682D00D23742 /* LaunchScreen.storyboard */; };
 		226468B91DB09F7200A32C1A /* TOSearchBarExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 226468B81DB09F7200A32C1A /* TOSearchBarExampleTests.m */; };
+		2264691F1DB0B2BE00A32C1A /* TOSearchBarLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 226469211DB0B2BE00A32C1A /* TOSearchBarLocalizable.strings */; };
 		22B3E8531D9D53A900C6D26F /* TOSearchBar+Assets.m in Sources */ = {isa = PBXBuildFile; fileRef = 22B3E8521D9D53A900C6D26F /* TOSearchBar+Assets.m */; };
 		22B3E8561D9D53BE00C6D26F /* TOSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 22B3E8551D9D53BE00C6D26F /* TOSearchBar.m */; };
 /* End PBXBuildFile section */
@@ -42,6 +43,20 @@
 		226468B61DB09F7200A32C1A /* TOSearchBarExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TOSearchBarExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		226468B81DB09F7200A32C1A /* TOSearchBarExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TOSearchBarExampleTests.m; sourceTree = "<group>"; };
 		226468BA1DB09F7200A32C1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		226469201DB0B2BE00A32C1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/TOSearchBarLocalizable.strings; sourceTree = "<group>"; };
+		226469221DB0B2F800A32C1A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TOSearchBarLocalizable.strings; sourceTree = "<group>"; };
+		226469231DB0B2F900A32C1A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/TOSearchBarLocalizable.strings; sourceTree = "<group>"; };
+		226469241DB0B2FA00A32C1A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/TOSearchBarLocalizable.strings; sourceTree = "<group>"; };
+		226469261DB0B2FB00A32C1A /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/TOSearchBarLocalizable.strings"; sourceTree = "<group>"; };
+		226469271DB0B2FD00A32C1A /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/TOSearchBarLocalizable.strings; sourceTree = "<group>"; };
+		226469281DB0B2FE00A32C1A /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/TOSearchBarLocalizable.strings; sourceTree = "<group>"; };
+		226469291DB0B2FF00A32C1A /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/TOSearchBarLocalizable.strings; sourceTree = "<group>"; };
+		2264692A1DB0B30000A32C1A /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/TOSearchBarLocalizable.strings; sourceTree = "<group>"; };
+		2264692B1DB0B30100A32C1A /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/TOSearchBarLocalizable.strings; sourceTree = "<group>"; };
+		2264692C1DB0B30200A32C1A /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/TOSearchBarLocalizable.strings; sourceTree = "<group>"; };
+		2264692D1DB0B30200A32C1A /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/TOSearchBarLocalizable.strings; sourceTree = "<group>"; };
+		2264692E1DB0B30300A32C1A /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/TOSearchBarLocalizable.strings; sourceTree = "<group>"; };
+		2264692F1DB0B40500A32C1A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/TOSearchBarLocalizable.strings"; sourceTree = "<group>"; };
 		22B3E8511D9D53A900C6D26F /* TOSearchBar+Assets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TOSearchBar+Assets.h"; path = "TOSearchBar/TOSearchBar+Assets.h"; sourceTree = "<group>"; };
 		22B3E8521D9D53A900C6D26F /* TOSearchBar+Assets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "TOSearchBar+Assets.m"; path = "TOSearchBar/TOSearchBar+Assets.m"; sourceTree = "<group>"; };
 		22B3E8541D9D53BE00C6D26F /* TOSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TOSearchBar.h; path = TOSearchBar/TOSearchBar.h; sourceTree = "<group>"; };
@@ -125,6 +140,7 @@
 				22B3E8551D9D53BE00C6D26F /* TOSearchBar.m */,
 				22B3E8511D9D53A900C6D26F /* TOSearchBar+Assets.h */,
 				22B3E8521D9D53A900C6D26F /* TOSearchBar+Assets.m */,
+				226469211DB0B2BE00A32C1A /* TOSearchBarLocalizable.strings */,
 			);
 			name = TOSearchBar;
 			sourceTree = "<group>";
@@ -196,6 +212,18 @@
 			knownRegions = (
 				en,
 				Base,
+				fr,
+				de,
+				"zh-Hant",
+				ja,
+				es,
+				it,
+				nl,
+				ko,
+				ru,
+				pl,
+				da,
+				"zh-Hans",
 			);
 			mainGroup = 225977B71D9B682D00D23742;
 			productRefGroup = 225977C11D9B682D00D23742 /* Products */;
@@ -215,6 +243,7 @@
 			files = (
 				225977D31D9B682D00D23742 /* LaunchScreen.storyboard in Resources */,
 				225977D01D9B682D00D23742 /* Assets.xcassets in Resources */,
+				2264691F1DB0B2BE00A32C1A /* TOSearchBarLocalizable.strings in Resources */,
 				225977CE1D9B682D00D23742 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -276,6 +305,28 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		226469211DB0B2BE00A32C1A /* TOSearchBarLocalizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				226469201DB0B2BE00A32C1A /* Base */,
+				226469221DB0B2F800A32C1A /* en */,
+				226469231DB0B2F900A32C1A /* fr */,
+				226469241DB0B2FA00A32C1A /* de */,
+				226469261DB0B2FB00A32C1A /* zh-Hant */,
+				226469271DB0B2FD00A32C1A /* ja */,
+				226469281DB0B2FE00A32C1A /* es */,
+				226469291DB0B2FF00A32C1A /* it */,
+				2264692A1DB0B30000A32C1A /* nl */,
+				2264692B1DB0B30100A32C1A /* ko */,
+				2264692C1DB0B30200A32C1A /* ru */,
+				2264692D1DB0B30200A32C1A /* pl */,
+				2264692E1DB0B30300A32C1A /* da */,
+				2264692F1DB0B40500A32C1A /* zh-Hans */,
+			);
+			name = TOSearchBarLocalizable.strings;
+			path = TOSearchBar;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -283,6 +334,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -332,6 +384,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -377,7 +430,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 6LF3GMKZAB;
 				INFOPLIST_FILE = TOSearchBarExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.timoliver.TOSearchBarExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -390,7 +443,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 6LF3GMKZAB;
 				INFOPLIST_FILE = TOSearchBarExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.timoliver.TOSearchBarExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -453,6 +506,7 @@
 				226468BF1DB09F7200A32C1A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
