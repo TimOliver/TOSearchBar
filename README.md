@@ -1,5 +1,11 @@
 ![TOSearchBar](screenshot.jpg)
 
+[![CI Status](http://img.shields.io/travis/TimOliver/TOSearchBar.svg?style=flat)](http://api.travis-ci.org/TimOliver/TOSearchBar.svg)
+[![CocoaPods](https://img.shields.io/cocoapods/dt/TOSearchBar.svg?maxAge=3600)](https://cocoapods.org/pods/TOSearchBar)
+[![Version](https://img.shields.io/cocoapods/v/TOSearchBar.svg?style=flat)](http://cocoadocs.org/docsets/TOSearchBar)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/TimOliver/TOSearchBar/master/LICENSE)
+[![Platform](https://img.shields.io/cocoapods/p/TOSearchBar.svg?style=flat)](http://cocoadocs.org/docsets/TOSearchBar)
+
 # TOSearchBar
 
 `TOSearchBar` is a basic re-implementation of [`UISearchBar`](https://developer.apple.com/reference/uikit/uisearchbar), Apple's UI control for performing simple text-based searches. Unlike `UISearchBar`, `TOSearchBar` has been designed to be much more easily themed, as well as provide smoother, more native feeling animations.
