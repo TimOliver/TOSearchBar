@@ -23,6 +23,8 @@
 #import "TOSearchBar.h"
 #import "TOSearchBar+Assets.h"
 
+#define UIKitLocalizedString(key) [[NSBundle bundleWithIdentifier:@"com.apple.UIKit"] localizedStringForKey:key value:@"" table:nil]
+
 static const CGFloat kTOSearchBarInset = 8.0f; // inset from inside the bar
 static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and placeholder
 
@@ -165,7 +167,7 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     if (self.showsCancelButton && self.cancelButton == nil) {
         self.cancelButton = [UIButton buttonWithType:UIButtonTypeSystem];
     }
-    [self.cancelButton setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
+    [self.cancelButton setTitle:UIKitLocalizedString(@"Cancel") forState:UIControlStateNormal];
     self.cancelButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
     self.cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [self.cancelButton addTarget:self action:@selector(cancelButttonTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -488,7 +490,7 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
 
 - (void)setPlaceholderText:(NSString *)placeholderText
 {
-    self.placeholderLabel.text = placeholderText ?: NSLocalizedString(@"Search", @"");
+    self.placeholderLabel.text = placeholderText ?: UIKitLocalizedString(@"Search");
     [self.placeholderLabel sizeToFit];
     [self setNeedsLayout];
 }
