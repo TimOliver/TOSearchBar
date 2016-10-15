@@ -57,7 +57,7 @@ typedef NS_ENUM(NSInteger, TOSearchBarStyle) {
 /**
  Called just after each time the text in the text field is changed.
  */
-- (void)searchBarDidChange:(TOSearchBar *)searchBar;
+- (void)searchBar:(TOSearchBar *)searchBar textDidChange:(nullable NSString *)searchText;
 
 /**
  Called during text editing and can be used to optionally constrain the type of characters the field can accept.

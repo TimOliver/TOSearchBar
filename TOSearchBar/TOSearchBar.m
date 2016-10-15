@@ -408,17 +408,23 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
 #pragma mark - Text Field Delegate -
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+    BOOL result = YES;
+    
+    // Allow the delegate to override this value
     if ([self.delegate respondsToSelector:@selector(searchBarShouldBeginEditing:)]) {
-        return [self.delegate searchBarShouldBeginEditing:self];
+        result = [self.delegate searchBarShouldBeginEditing:self];
     }
     
-    return YES;
+    // Kickstart the editing transition now. Any later creates strange stretch effects
+    if (result) {
+         [self setEditing:YES animated:YES];
+    }
+    
+    return result;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    [self setEditing:YES animated:YES];
-    
     if ([self.delegate respondsToSelector:@selector(searchBarDidBeginEditing:)]) {
         [self.delegate searchBarDidBeginEditing:self];
     }
@@ -426,11 +432,19 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
+    BOOL result = YES;
+    
+    // Allow the delegate to override this value
     if ([self.delegate respondsToSelector:@selector(searchBarShouldEndEditing:)]) {
-        return [self.delegate searchBarShouldEndEditing:self];
+        result = [self.delegate searchBarShouldEndEditing:self];
     }
     
-    return YES;
+    // Kickstart the editing transition now. Any later creates strange stretch effects
+    if (result) {
+        [self setEditing:YES animated:YES];
+    }
+    
+    return result;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
@@ -450,8 +464,8 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     
     [self setClearButtonHidden:!self.hasSearchText animated:YES];
     
-    if ([self.delegate respondsToSelector:@selector(searchBarDidChange:)]) {
-        [self.delegate searchBarDidChange:self];
+    if ([self.delegate respondsToSelector:@selector(searchBar:textDidChange:)]) {
+        [self.delegate searchBar:self textDidChange:self.text];
     }
 }
 
