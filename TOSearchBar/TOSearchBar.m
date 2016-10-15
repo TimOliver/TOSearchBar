@@ -284,6 +284,7 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
         self.placeholderTintColor = [UIColor colorWithWhite:0.4f alpha:1.0f];
         self.searchTextField.textColor = [UIColor whiteColor];
         self.clearButton.tintColor = [UIColor colorWithWhite:0.45f alpha:1.0f];
+        self.searchTextField.keyboardAppearance = UIKeyboardAppearanceDark;
         return;
     }
     
@@ -291,6 +292,7 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     self.searchTextField.textColor = [UIColor blackColor];
     self.clearButton.tintColor = [UIColor colorWithWhite:0.55f alpha:1.0f];
     self.barBackgroundTintColor = [UIColor colorWithRed:0.0f green:0.05f blue:0.13f alpha:0.083f];
+    self.searchTextField.keyboardAppearance = UIKeyboardAppearanceLight;
 }
 
 #pragma mark - Event Handling -
