@@ -330,6 +330,11 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     return [self.searchTextField becomeFirstResponder];
 }
 
+- (BOOL)isFirstResponder
+{
+    return self.searchTextField.isFirstResponder;
+}
+
 - (BOOL)resignFirstResponder
 {
     [self.searchTextField resignFirstResponder];
