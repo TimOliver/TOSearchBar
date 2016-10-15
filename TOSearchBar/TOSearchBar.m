@@ -306,17 +306,15 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
 
 - (void)clearButtonTapped:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(searchBarShouldClear:)]) {
-        if ([self.delegate searchBarShouldClear:self]) {
-            return;
-        }
-    }
-    
     self.text = nil;
     self.clearButton.enabled = NO;
     self.placeholderLabel.hidden = NO;
     [self setClearButtonHidden:YES animated:YES];
     [self becomeFirstResponder];
+    
+    if ([self.delegate respondsToSelector:@selector(searchBarClearButtonTapped:)]) {
+        [self.delegate searchBarClearButtonTapped:self];
+    }
 }
 
 - (void)cancelButttonTapped:(id)sender
@@ -480,8 +478,8 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if ([self.delegate respondsToSelector:@selector(searchBarShouldReturn:)]) {
-        return [self.delegate searchBarShouldReturn:self];
+    if ([self.delegate respondsToSelector:@selector(searchBarSearchButtonTapped:)]) {
+        [self.delegate searchBarSearchButtonTapped:self];
     }
     
     return YES;

@@ -67,12 +67,12 @@ typedef NS_ENUM(NSInteger, TOSearchBarStyle) {
 /** 
  Called when the 'Clear' button is tapped to confirm it may go ahead.
  */
-- (BOOL)searchBarShouldClear:(TOSearchBar *)searchBar;
+- (void)searchBarClearButtonTapped:(TOSearchBar *)searchBar;
 
 /**
  Called after the user hits the 'Search' button. Can be used to set up actions for that event.
  */
-- (BOOL)searchBarShouldReturn:(TOSearchBar *)searchBar;
+- (void)searchBarSearchButtonTapped:(TOSearchBar *)searchBar;
 
 @end
 
