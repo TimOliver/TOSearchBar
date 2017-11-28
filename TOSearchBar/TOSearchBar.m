@@ -26,6 +26,14 @@
 static const CGFloat kTOSearchBarInset = 8.0f; // inset from inside the bar
 static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and placeholder
 
+// iOS 10 and down
+static const CGFloat kTOSearchBarFontSizeClassic = 15.0f;
+static const CGFloat kTOSearchBarBackgroundHeightClassic = 28.0f;
+
+// iOS 11 style constants
+static const CGFloat kTOSearchBarFontSizeModern = 17.0f;
+static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
+
 @interface TOSearchBar () <UIGestureRecognizerDelegate, UITextFieldDelegate>
 
 // UI components
@@ -40,28 +48,8 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
 // Interaction
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
-/* View Set-up */
-- (void)setUpViews;
-- (void)setUpBackgroundViews;
-- (void)setUpPlaceholderViews;
-- (void)setUpButtons;
-- (void)setUpTextField;
-- (void)setUpGestureRecognizers;
-
-/* Theme Management */
-- (void)configureThemeForCurrentStyle;
-
-/* State Management */
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
-- (void)setClearButtonHidden:(BOOL)hidden animated:(BOOL)animated;
-
-/* Feedback Events */
-- (void)textFieldDidChange:(UITextField *)textField;
-- (void)clearButtonTapped:(id)sender;
-- (void)cancelButttonTapped:(id)sender;
-
-/* Assets Bundle */
-+ (NSBundle *)bundle;
+// State
+@property (nonatomic, readonly) BOOL centerTextLabel;
 
 @end
 
@@ -138,7 +126,12 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     if (self.placeholderLabel == nil) {
         self.placeholderLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     }
-    self.placeholderLabel.font = [UIFont systemFontOfSize:15.0f];
+    
+    CGFloat fontSize = kTOSearchBarFontSizeClassic;
+    if (@available(iOS 11.0, *)) {
+        fontSize = kTOSearchBarFontSizeModern;
+    }
+    self.placeholderLabel.font = [UIFont systemFontOfSize:fontSize];
     self.placeholderLabel.text = NSLocalizedStringFromTableInBundle(@"Search",
                                                                     @"TOSearchBarLocalizable",
                                                                     [TOSearchBar bundle],
@@ -159,7 +152,11 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
         self.searchTextField = [[UITextField alloc] initWithFrame:self.containerView.bounds];
     }
     
-    self.searchTextField.font = [UIFont systemFontOfSize:15.0f];
+    CGFloat fontSize = kTOSearchBarFontSizeClassic;
+    if (@available(iOS 11.0, *)) {
+        fontSize = kTOSearchBarFontSizeModern;
+    }
+    self.searchTextField.font = [UIFont systemFontOfSize:fontSize];
     self.searchTextField.delegate = self;
     self.searchTextField.returnKeyType = UIReturnKeySearch;
     [self.searchTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
@@ -230,6 +227,11 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     // Layout the background view (and content container)
     frame = self.barBackgroundView.frame;
     frame.size.width = (self.frame.size.width) - (self.horizontalInset * 2.0f);
+    frame.size.height = kTOSearchBarBackgroundHeightClassic;
+    if (@available(iOS 11.0, *)) {
+        frame.size.height = kTOSearchBarBackgroundHeightModern;
+    }
+    
     if (self.editing && self.cancelButton) { frame.size.width -= self.cancelButton.frame.size.width; }
     frame.origin.x = self.horizontalInset;
     frame.origin.y = floorf((self.frame.size.height - frame.size.height) * 0.5f);
@@ -238,7 +240,7 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     
     // layout the place holder label
     frame = self.placeholderLabel.frame;
-    if (self.editing || self.hasSearchText) {
+    if (self.centerTextLabel == NO) {
         frame.origin.x = (kTOSearchBarIconMargin + kTOSearchBarInset) + self.iconView.frame.size.width;
     }
     else {
@@ -256,7 +258,7 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     else {
         frame.origin.x = CGRectGetMinX(self.placeholderLabel.frame) - (CGRectGetWidth(self.iconView.frame) + kTOSearchBarIconMargin);
     }
-    frame.origin.y = CGRectGetMidY(self.placeholderLabel.frame) - (CGRectGetHeight(self.iconView.frame) * 0.5f);
+    frame.origin.y = floorf(CGRectGetMidY(self.placeholderLabel.frame) - (CGRectGetHeight(self.iconView.frame) * 0.5f));
     self.iconView.frame = frame;
     
     // lay out the text field
@@ -288,10 +290,17 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
         return;
     }
     
-    self.placeholderTintColor = [UIColor colorWithWhite:0.55f alpha:1.0f];
     self.searchTextField.textColor = [UIColor blackColor];
-    self.clearButton.tintColor = [UIColor colorWithWhite:0.55f alpha:1.0f];
-    self.barBackgroundTintColor = [UIColor colorWithRed:0.0f green:0.05f blue:0.13f alpha:0.083f];
+    
+    self.placeholderTintColor = [UIColor colorWithRed:0.556863f green:0.556863f blue:0.576471f alpha:1.0f];
+    self.clearButton.tintColor = [UIColor colorWithRed:0.556863f green:0.556863f blue:0.576471f alpha:1.0f];
+    
+    if (@available(iOS 11.0, *)) {
+        self.barBackgroundTintColor = [UIColor colorWithRed:0.0f green:0.00f blue:0.09f alpha:0.053f];
+    }
+    else {
+        self.barBackgroundTintColor = [UIColor colorWithRed:0.0f green:0.05f blue:0.13f alpha:0.083f];
+    }
     self.searchTextField.keyboardAppearance = UIKeyboardAppearanceLight;
 }
 
@@ -580,6 +589,15 @@ static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and 
     }
     
     [self setNeedsLayout];
+}
+
+- (BOOL)centerTextLabel
+{
+    if (@available(iOS 11.0, *)) {
+        return NO;
+    }
+    
+    return (self.editing || self.hasSearchText);
 }
 
 + (NSBundle *)bundle
