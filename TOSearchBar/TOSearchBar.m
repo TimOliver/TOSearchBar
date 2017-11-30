@@ -24,13 +24,14 @@
 #import "TOSearchBar+Assets.h"
 
 static const CGFloat kTOSearchBarInset = 8.0f; // inset from inside the bar
-static const CGFloat kTOSearchBarIconMargin = 5.0f; // spacing between icon and placeholder
 
 // iOS 10 and down
+static const CGFloat kTOSearchBarIconMarginClassic = 5.0f; // spacing between icon and placeholder
 static const CGFloat kTOSearchBarFontSizeClassic = 15.0f;
 static const CGFloat kTOSearchBarBackgroundHeightClassic = 28.0f;
 
 // iOS 11 style constants
+static const CGFloat kTOSearchBarIconMarginModern = 7.0f;
 static const CGFloat kTOSearchBarFontSizeModern = 17.0f;
 static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
 
@@ -44,9 +45,6 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
 @property (nonatomic, strong, readwrite) UIButton *cancelButton;
 @property (nonatomic, strong, readwrite) UIButton *clearButton;
 @property (nonatomic, strong, readwrite) UIImageView *iconView;
-
-// Interaction
-@property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
 // State
 @property (nonatomic, readonly) BOOL centerTextLabel;
@@ -93,6 +91,7 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
 - (void)setUpViews
 {
     self.clipsToBounds = YES;
+    self.userInteractionEnabled = YES;
     
     [self setUpBackgroundViews];
     [self setUpPlaceholderViews];
@@ -156,6 +155,7 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
     if (@available(iOS 11.0, *)) {
         fontSize = kTOSearchBarFontSizeModern;
     }
+    self.searchTextField.userInteractionEnabled = YES;
     self.searchTextField.font = [UIFont systemFontOfSize:fontSize];
     self.searchTextField.delegate = self;
     self.searchTextField.returnKeyType = UIReturnKeySearch;
@@ -165,6 +165,11 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
 
 - (void)setUpButtons
 {
+    CGFloat iconMargin = kTOSearchBarIconMarginClassic;
+    if (@available(iOS 11.0, *)) {
+        iconMargin = kTOSearchBarIconMarginModern;
+    }
+    
     if (self.showsCancelButton && self.cancelButton == nil) {
         self.cancelButton = [UIButton buttonWithType:UIButtonTypeSystem];
     }
@@ -176,7 +181,7 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
     self.cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [self.cancelButton addTarget:self action:@selector(cancelButttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.cancelButton sizeToFit];
-    self.cancelButton.frame = CGRectInset(self.cancelButton.frame, -kTOSearchBarIconMargin, 0.0f);
+    self.cancelButton.frame = CGRectInset(self.cancelButton.frame, -iconMargin, 0.0f);
     [self addSubview:self.cancelButton];
     
     if (self.clearButton) {
@@ -195,14 +200,19 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
 
 - (void)setUpGestureRecognizers
 {
-    if (self.tapGestureRecognizer) {
-        return;
-    }
+    [self.searchTextField addTarget:self action:@selector(didTapDown:) forControlEvents:UIControlEventTouchDown];
+    [self.searchTextField addTarget:self action:@selector(didTapUp:) forControlEvents:UIControlEventTouchUpInside];
+    [self.searchTextField addTarget:self action:@selector(didTapCancel:) forControlEvents:UIControlEventTouchCancel];
+    
+//    if (self.tapGestureRecognizer) {
+//        return;
+//    }
     
     // A long-press recognizer is used in order to detect when the user initially touches the glass
-    self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
-    self.tapGestureRecognizer.delegate = self;
-    [self addGestureRecognizer:self.tapGestureRecognizer];
+//    self.tapGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
+//    self.tapGestureRecognizer.minimumPressDuration = 0.0001f;
+//    self.tapGestureRecognizer.delegate = self;
+//    [self addGestureRecognizer:self.tapGestureRecognizer];
 }
 
 #pragma mark - View Management -
@@ -210,6 +220,11 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
 {
     CGRect frame;
     CGSize clearImageSize = self.clearButton.imageView.image.size;
+    
+    CGFloat iconMargin = kTOSearchBarIconMarginClassic;
+    if (@available(iOS 11.0, *)) {
+        iconMargin = kTOSearchBarIconMarginModern;
+    }
     
     if (self.cancelButton) {
         self.cancelButton.alpha = self.editing ? 1.0f : 0.0f;
@@ -241,7 +256,13 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
     // layout the place holder label
     frame = self.placeholderLabel.frame;
     if (self.centerTextLabel == NO) {
-        frame.origin.x = (kTOSearchBarIconMargin + kTOSearchBarInset) + self.iconView.frame.size.width;
+        frame.origin.x = (kTOSearchBarInset) + self.iconView.frame.size.width;
+        if (@available(iOS 11.0, *)) {
+            frame.origin.x += kTOSearchBarIconMarginModern;
+        }
+        else {
+            frame.origin.x += kTOSearchBarIconMarginClassic;
+        }
     }
     else {
         frame.origin.x = floorf((CGRectGetWidth(self.containerView.frame) - CGRectGetWidth(frame)) * 0.5f);
@@ -256,7 +277,7 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
         frame.origin.x = kTOSearchBarInset;
     }
     else {
-        frame.origin.x = CGRectGetMinX(self.placeholderLabel.frame) - (CGRectGetWidth(self.iconView.frame) + kTOSearchBarIconMargin);
+        frame.origin.x = CGRectGetMinX(self.placeholderLabel.frame) - (CGRectGetWidth(self.iconView.frame) + iconMargin);
     }
     frame.origin.y = floorf(CGRectGetMidY(self.placeholderLabel.frame) - (CGRectGetHeight(self.iconView.frame) * 0.5f));
     self.iconView.frame = frame;
@@ -264,7 +285,7 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
     // lay out the text field
     frame = self.searchTextField.frame;
     frame.size = self.containerView.frame.size;
-    frame.size.width = CGRectGetWidth(frame) - (self.placeholderLabel.frame.origin.x + kTOSearchBarIconMargin + clearImageSize.width);
+    frame.size.width = CGRectGetWidth(frame) - (self.placeholderLabel.frame.origin.x + iconMargin + clearImageSize.width);
     frame.origin.x = self.placeholderLabel.frame.origin.x;
     frame.origin.y = 0.0f;
     self.searchTextField.frame = frame;
@@ -296,19 +317,17 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
     self.clearButton.tintColor = [UIColor colorWithRed:0.556863f green:0.556863f blue:0.576471f alpha:1.0f];
     
     if (@available(iOS 11.0, *)) {
-        self.barBackgroundTintColor = [UIColor colorWithRed:0.0f green:0.00f blue:0.09f alpha:0.053f];
+        self.barBackgroundTintColor = [UIColor colorWithRed:0.0f green:0.00f blue:0.02352f alpha:0.055f];
+        self.selectedBarBackgroundTintColor = [UIColor colorWithRed:0.0f green:0.00f blue:0.02352f alpha:0.1f];
     }
     else {
         self.barBackgroundTintColor = [UIColor colorWithRed:0.0f green:0.05f blue:0.13f alpha:0.083f];
+        self.selectedBarBackgroundTintColor = [UIColor colorWithRed:0.0f green:0.05f blue:0.13f alpha:0.09f];
     }
     self.searchTextField.keyboardAppearance = UIKeyboardAppearanceLight;
 }
 
 #pragma mark - Event Handling -
-- (void)tapGestureRecognized:(UITapGestureRecognizer *)recognizer
-{
-    [self becomeFirstResponder];
-}
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
@@ -360,6 +379,29 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
     }
     
     return [super hitTest:point withEvent:event];
+}
+
+- (void)didTapDown:(id)sender
+{
+    if (self.searchTextField.isFirstResponder) { return; }
+    [self setSelected:YES animated:YES];
+}
+
+- (void)didTapCancel:(id)sender
+{
+    if (self.searchTextField.isFirstResponder) { return; }
+    [self setSelected:NO animated:YES];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    
+    [super touchesBegan:touches withEvent:event];
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [super touchesEnded:touches withEvent:event];
 }
 
 #pragma mark - Editing -
@@ -419,6 +461,28 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
      }];
 }
 
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    if (super.selected == selected) { return; }
+    
+    super.selected = selected;
+    
+    void (^selectedBlock)(void) = ^{
+        self.barBackgroundView.tintColor = selected ? self.selectedBarBackgroundTintColor : self.barBackgroundTintColor;
+    };
+    
+    if (!animated) {
+        selectedBlock();
+        return;
+    }
+    
+    [UIView animateWithDuration:0.3f
+                          delay:0.0f
+                        options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:selectedBlock
+                     completion:nil];
+}
+
 #pragma mark - Text Field Delegate -
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
@@ -442,6 +506,8 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
     if ([self.delegate respondsToSelector:@selector(searchBarDidBeginEditing:)]) {
         [self.delegate searchBarDidBeginEditing:self];
     }
+    
+    [self setSelected:NO animated:YES];
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField

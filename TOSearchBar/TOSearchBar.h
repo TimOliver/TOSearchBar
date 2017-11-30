@@ -111,6 +111,9 @@ IB_DESIGNABLE
 /** The tint color of the rounded background rectangle */
 @property (null_resettable, nonatomic, strong) IBInspectable UIColor *barBackgroundTintColor UI_APPEARANCE_SELECTOR;
 
+/** The tint color of the background when the text field is tapped by the user */
+@property (nullable, nonatomic, strong) IBInspectable UIColor *selectedBarBackgroundTintColor UI_APPEARANCE_SELECTOR;
+
 /** The tint color of the background when the text field is currently, or has content */
 @property (nullable, nonatomic, strong) IBInspectable UIColor *highlightedBarBackgroundTintColor UI_APPEARANCE_SELECTOR;
 
