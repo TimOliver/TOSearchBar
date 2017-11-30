@@ -1,5 +1,0 @@
-language: objective-c
-osx_image: xcode8
-xcode_project: TOSearchBarExample.xcodeproj
-xcode_scheme: TOSearchBarExample
-script: set -o pipefail && xcodebuild -project "TOSearchBarExample.xcodeproj" -scheme "TOSearchBarExample" -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO -destination "platform=iOS Simulator,name=iPhone 7,OS=10.0" clean test | xcpretty
