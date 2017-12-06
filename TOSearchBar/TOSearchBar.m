@@ -110,6 +110,7 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
     self.barBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin |
     UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
     self.barBackgroundView.tintColor = self.barBackgroundTintColor;
+    self.barBackgroundView.userInteractionEnabled = NO;
     [self addSubview:self.barBackgroundView];
     
     if (self.containerView == nil) {
@@ -156,6 +157,7 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
         fontSize = kTOSearchBarFontSizeModern;
     }
     self.searchTextField.userInteractionEnabled = YES;
+    self.searchTextField.backgroundColor = [UIColor clearColor];
     self.searchTextField.font = [UIFont systemFontOfSize:fontSize];
     self.searchTextField.delegate = self;
     self.searchTextField.returnKeyType = UIReturnKeySearch;
@@ -200,19 +202,12 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
 
 - (void)setUpGestureRecognizers
 {
-    [self.searchTextField addTarget:self action:@selector(didTapDown:) forControlEvents:UIControlEventTouchDown];
+    // Add recognizers to the text field itself (as it captures exclusive access to the view if tapped)
+    [self.searchTextField addTarget:self action:@selector(didTapEnter:) forControlEvents:UIControlEventTouchDown];
     [self.searchTextField addTarget:self action:@selector(didTapUp:) forControlEvents:UIControlEventTouchUpInside];
-    [self.searchTextField addTarget:self action:@selector(didTapCancel:) forControlEvents:UIControlEventTouchCancel];
-    
-//    if (self.tapGestureRecognizer) {
-//        return;
-//    }
-    
-    // A long-press recognizer is used in order to detect when the user initially touches the glass
-//    self.tapGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
-//    self.tapGestureRecognizer.minimumPressDuration = 0.0001f;
-//    self.tapGestureRecognizer.delegate = self;
-//    [self addGestureRecognizer:self.tapGestureRecognizer];
+    [self.searchTextField addTarget:self action:@selector(didTapExit:) forControlEvents:UIControlEventTouchCancel];
+    [self.searchTextField addTarget:self action:@selector(didTapExit:) forControlEvents:UIControlEventTouchDragExit];
+    [self.searchTextField addTarget:self action:@selector(didTapEnter:) forControlEvents:UIControlEventTouchDragEnter];
 }
 
 #pragma mark - View Management -
@@ -304,25 +299,27 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
     
     if (darkMode) {
         self.barBackgroundTintColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.065f];
+        self.selectedBarBackgroundTintColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.15f];
         self.placeholderTintColor = [UIColor colorWithWhite:0.4f alpha:1.0f];
         self.searchTextField.textColor = [UIColor whiteColor];
+        self.searchTextField.text = self.searchTextField.text; // Force the color to update
         self.clearButton.tintColor = [UIColor colorWithWhite:0.45f alpha:1.0f];
         self.searchTextField.keyboardAppearance = UIKeyboardAppearanceDark;
         return;
     }
     
     self.searchTextField.textColor = [UIColor blackColor];
+    self.searchTextField.text = self.searchTextField.text; // Force the color to update
     
     self.placeholderTintColor = [UIColor colorWithRed:0.556863f green:0.556863f blue:0.576471f alpha:1.0f];
     self.clearButton.tintColor = [UIColor colorWithRed:0.556863f green:0.556863f blue:0.576471f alpha:1.0f];
     
     if (@available(iOS 11.0, *)) {
-        self.barBackgroundTintColor = [UIColor colorWithRed:0.0f green:0.00f blue:0.02352f alpha:0.055f];
-        self.selectedBarBackgroundTintColor = [UIColor colorWithRed:0.0f green:0.00f blue:0.02352f alpha:0.1f];
+        self.barBackgroundTintColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.03922f alpha:0.055f];
+        self.selectedBarBackgroundTintColor = [UIColor colorWithRed:0.04313f green:0.0392f blue:0.11765f alpha:0.2f];
     }
     else {
         self.barBackgroundTintColor = [UIColor colorWithRed:0.0f green:0.05f blue:0.13f alpha:0.083f];
-        self.selectedBarBackgroundTintColor = [UIColor colorWithRed:0.0f green:0.05f blue:0.13f alpha:0.09f];
     }
     self.searchTextField.keyboardAppearance = UIKeyboardAppearanceLight;
 }
@@ -370,38 +367,39 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
     return [super resignFirstResponder];
 }
 
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
-    
-    UIView *targetView = self.clearButton;
-    CGPoint pointForTargetView = [targetView convertPoint:point fromView:self];
-    if (CGRectContainsPoint(targetView.bounds, pointForTargetView)) {
-        return [targetView hitTest:pointForTargetView withEvent:event];
-    }
-    
-    return [super hitTest:point withEvent:event];
-}
-
-- (void)didTapDown:(id)sender
+- (void)didTapEnter:(id)sender
 {
     if (self.searchTextField.isFirstResponder) { return; }
     [self setSelected:YES animated:YES];
 }
 
-- (void)didTapCancel:(id)sender
+- (void)didTapUp:(id)sender
+{
+    if (self.searchTextField.isFirstResponder) { return; }
+    [self.searchTextField becomeFirstResponder];
+}
+
+- (void)didTapExit:(id)sender
 {
     if (self.searchTextField.isFirstResponder) { return; }
     [self setSelected:NO animated:YES];
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
     
-    [super touchesBegan:touches withEvent:event];
-}
-
-- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    [super touchesEnded:touches withEvent:event];
+    // Make sure the 'clear' button receives priority touch events
+    UIView *targetView = self.clearButton;
+    CGPoint pointForTargetView = [targetView convertPoint:point fromView:self];
+    if (targetView.hidden == NO && CGRectContainsPoint(targetView.bounds, pointForTargetView)) {
+        return [targetView hitTest:pointForTargetView withEvent:event];
+    }
+    
+    // If we touch anywhere in the rounded rectangle, assume we were aiming for the search field
+    if (CGRectContainsPoint(self.barBackgroundView.frame, point)) {
+        return self.searchTextField;
+    }
+    
+    return [super hitTest:point withEvent:event];
 }
 
 #pragma mark - Editing -
@@ -467,6 +465,10 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
     
     super.selected = selected;
     
+    // The bar didn't change colour in iOS 10 and down
+    if (@available(iOS 11.0, *)) { }
+    else { return; }
+    
     void (^selectedBlock)(void) = ^{
         self.barBackgroundView.tintColor = selected ? self.selectedBarBackgroundTintColor : self.barBackgroundTintColor;
     };
@@ -478,7 +480,7 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
     
     [UIView animateWithDuration:0.3f
                           delay:0.0f
-                        options:UIViewAnimationOptionBeginFromCurrentState
+                        options:0
                      animations:selectedBlock
                      completion:nil];
 }
@@ -663,7 +665,7 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
         return NO;
     }
     
-    return (self.editing || self.hasSearchText);
+    return !self.editing && !self.hasSearchText;
 }
 
 + (NSBundle *)bundle
