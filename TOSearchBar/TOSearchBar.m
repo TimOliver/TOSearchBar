@@ -342,6 +342,10 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
     if ([self.delegate respondsToSelector:@selector(searchBarClearButtonTapped:)]) {
         [self.delegate searchBarClearButtonTapped:self];
     }
+    
+    if ([self.delegate respondsToSelector:@selector(searchBar:textDidChange:)]) {
+        [self.delegate searchBar:self textDidChange:self.text];
+    }
 }
 
 - (void)cancelButttonTapped:(id)sender
