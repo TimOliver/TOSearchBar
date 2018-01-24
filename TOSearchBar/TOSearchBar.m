@@ -55,10 +55,27 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
 
 @synthesize barBackgroundTintColor = _barBackgroundTintColor;
 
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        [self setUpViews];
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super initWithCoder:aDecoder]) {
+        [self setUpViews];
+    }
+    
+    return self;
+}
+
 - (instancetype)initWithFrame:(CGRect)frame style:(TOSearchBarStyle)style
 {
     if (self = [super initWithFrame:frame]) {
         _style = style;
+        [self setUpViews];
     }
     
     return self;
@@ -68,6 +85,7 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
 {
     if (self = [super initWithFrame:CGRectZero]) {
         _style = style;
+        [self setUpViews];
     }
     
     return self;
@@ -83,7 +101,7 @@ static const CGFloat kTOSearchBarBackgroundHeightModern = 36.0f;
 {
     [super didMoveToSuperview];
     if (self.superview != nil) {
-        [self setUpViews];
+        //[self setUpViews];
     }
 }
 
